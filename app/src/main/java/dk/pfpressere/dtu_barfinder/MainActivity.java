@@ -14,15 +14,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        Button mapsbutton = (Button) findViewById(R.id.vknapid);
+        /*Button mapsbutton = (Button) findViewById(R.id.vknapid);
         mapsbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://maps.google.dk/maps?=34.34&daddr=55.7865880, 12.5253610"));
                 startActivity(intent);
             }
-        });
+        });*/
         // Christensen lol amiright
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
