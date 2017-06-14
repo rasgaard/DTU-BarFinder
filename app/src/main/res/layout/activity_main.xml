@@ -8,8 +8,19 @@
     tools:context="dk.pfpressere.dtu_barfinder.MainActivity">
 
     <Button
+        android:id="@+id/vknapid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/vej_knap"
-        android:id="@+id/vknapid"/>
+        android:visibility="invisible"
+        tools:layout_editor_absoluteY="49dp"
+        tools:layout_editor_absoluteX="45dp" />
+
+    <Button
+        android:id="@+id/start_main_compass_activity_button_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gå til MainCompassActivty."
+        tools:layout_editor_absoluteX="75dp"
+        tools:layout_editor_absoluteY="252dp" />
 </android.support.constraint.ConstraintLayout>

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">DTU-BarFinder</string>
     <string name="vej_knap">find kb</string>
+    <string name="title_activity_main_compass">MainCompassActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

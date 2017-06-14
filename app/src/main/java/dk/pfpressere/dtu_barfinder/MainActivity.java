@@ -23,6 +23,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button startMainCompassActivityButton = (Button) findViewById(R.id.start_main_compass_activity_button_id);
+        startMainCompassActivityButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MainCompassActivity.class);
+                startActivity(intent);
+            }
+        });
         // Christensen lol amiright
     }
 }
