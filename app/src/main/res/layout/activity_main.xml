@@ -7,4 +7,9 @@
     android:layout_height="match_parent"
     tools:context="dk.pfpressere.dtu_barfinder.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vej_knap"
+        android:id="@+id/vknapid"/>
 </android.support.constraint.ConstraintLayout>

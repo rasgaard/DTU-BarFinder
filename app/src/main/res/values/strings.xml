@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DTU-BarFinder</string>
+    <string name="vej_knap">find kb</string>
 </resources>
