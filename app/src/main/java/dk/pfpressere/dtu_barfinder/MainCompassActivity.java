@@ -95,6 +95,17 @@ public class MainCompassActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
+            Intent drunkIntent = getPackageManager().getLaunchIntentForPackage("tech.radioactiveswordfish.drunkify");
+            if (drunkIntent != null) {
+                drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(drunkIntent);
+            } else {
+                drunkIntent = new Intent(Intent.ACTION_VIEW);
+                drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                drunkIntent.setData(Uri.parse("market://details?id=" + "tech.radioactiveswordfish.drunkify"));
+                startActivity(drunkIntent);
+            }
+
         } else if (id == R.id.nav_send) {
 
         }
