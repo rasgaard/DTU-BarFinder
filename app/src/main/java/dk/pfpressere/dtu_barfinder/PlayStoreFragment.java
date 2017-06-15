@@ -19,7 +19,7 @@ public class PlayStoreFragment extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick (DialogInterface dialog, int id){
 
-                        // fail safe try/catch, in case play store i not available.
+                        // fail safe try/catch, in case play store is not available.
 
                         try {
                             drunkIntent = new Intent(Intent.ACTION_VIEW);
@@ -28,7 +28,6 @@ public class PlayStoreFragment extends DialogFragment {
                             startActivity(drunkIntent);
                         } catch (Exception e) {
                             System.err.println("Hov! Noget gik galt.");
-
 
                         }
                     }})
