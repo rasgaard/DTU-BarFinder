@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">DTU-BarFinder</string>
     <string name="vej_knap">find kb</string>
+    <string name="title_activity_main_compass">MainCompassActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="open_in_google_maps">Åben med Google Maps</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
