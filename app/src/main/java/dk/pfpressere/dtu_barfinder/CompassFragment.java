@@ -12,6 +12,11 @@ import android.os.Bundle;
 
 public class CompassFragment extends Fragment {
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //final CompassView compassView = new CompassView();
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.compass_fragment,container,false);
     }

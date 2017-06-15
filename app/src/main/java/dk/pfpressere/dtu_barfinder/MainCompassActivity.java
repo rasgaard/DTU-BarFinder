@@ -101,7 +101,7 @@ public class MainCompassActivity extends AppCompatActivity
                     Uri.parse("https://maps.google.dk/maps?=34.34&daddr=55.7865880, 12.5253610")));
             // resets the checked item to the current fragment.
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.open_drunkify) {
 
             Intent drunkIntent = getPackageManager().getLaunchIntentForPackage("tech.radioactiveswordfish.drunkify");
             if (drunkIntent != null) {
