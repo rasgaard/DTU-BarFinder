@@ -25,7 +25,7 @@
             <item
                 android:id="@+id/open_drunkify"
                 android:icon="@drawable/ic_menu_drunkify"
-                android:title="@string/open_drunkify" />
+                android:title="@string/open_drunkify"/>
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"

@@ -1,5 +1,6 @@
 package dk.pfpressere.dtu_barfinder;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -104,15 +106,18 @@ public class MainCompassActivity extends AppCompatActivity
         } else if (id == R.id.open_drunkify) {
 
             Intent drunkIntent = getPackageManager().getLaunchIntentForPackage("tech.radioactiveswordfish.drunkify");
-            if (drunkIntent != null) {
-                drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(drunkIntent);
-            } else {
-                drunkIntent = new Intent(Intent.ACTION_VIEW);
-                drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                drunkIntent.setData(Uri.parse("market://details?id=" + "tech.radioactiveswordfish.drunkify"));
-                startActivity(drunkIntent);
-            }
+
+                if (drunkIntent != null) {
+
+                    // Opens Drunkify if the app is already installed.
+                    drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(drunkIntent);
+
+                } else {
+                    // Opens Play Store if Drunkify is not installed.
+                    PlayStoreFragment playStoreFragment = new PlayStoreFragment();
+                    playStoreFragment.show(getSupportFragmentManager(), "Play Store");
+                }
 
         } else if (id == R.id.nav_send) {
 
