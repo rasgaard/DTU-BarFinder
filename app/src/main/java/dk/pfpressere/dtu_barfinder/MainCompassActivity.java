@@ -1,5 +1,7 @@
 package dk.pfpressere.dtu_barfinder;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -30,6 +32,14 @@ public class MainCompassActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+
     }
 
     @Override
@@ -69,6 +79,7 @@ public class MainCompassActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
@@ -76,7 +87,11 @@ public class MainCompassActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_google_maps_route) {
+            // Start a goggle maps activity.
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://maps.google.dk/maps?=34.34&daddr=55.7865880, 12.5253610")));
+            // resets the checked item to the current fragment.
 
         } else if (id == R.id.nav_share) {
 
