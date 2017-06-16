@@ -5,8 +5,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +28,7 @@ public class CompassFragmentDrawing extends Fragment {
     static final float SCALING_FACTOR = 0.8f;
 
     CompassView compassView;
-    private Bitmap compassBitmap;
+    private Bitmap compassBitmapSrc;
     private float rotationDegrees = 90;
     private LayoutInflater inflater;
     private ViewGroup container;
@@ -39,9 +41,13 @@ public class CompassFragmentDrawing extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        compassView = new CompassView(getActivity());
+
         this.inflater = inflater;
         this.container = container;
+
+        compassView = new CompassView(getActivity());
+        compassBitmapSrc = BitmapFactory.decodeResource(getResources(),R.drawable.compass_512);
+
         return compassView;
     }
 
@@ -87,10 +93,16 @@ public class CompassFragmentDrawing extends Fragment {
         }
 
         private void drawCompass(Canvas canvas) {
-            // Creates a scaled bitmap, that scales to the view.
+
+            // Draws a background rect.
+            Paint whitePaint = new Paint();
+            whitePaint.setColor(Color.WHITE);
+            whitePaint.setStyle(Paint.Style.FILL);
+            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), whitePaint);
+
+            // Creates a scaled bitmap from the src, that scales to the view.
             int scaling = Math.round(Math.min(canvas.getWidth(),canvas.getHeight()) * SCALING_FACTOR);
-            compassBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.compass_512);
-            compassBitmap = Bitmap.createScaledBitmap(compassBitmap, scaling, scaling,false);
+            Bitmap compassBitmap = Bitmap.createScaledBitmap(compassBitmapSrc, scaling, scaling,false);
 
             // Rotates the bitmap
             Matrix rotateMatrix = new Matrix();
