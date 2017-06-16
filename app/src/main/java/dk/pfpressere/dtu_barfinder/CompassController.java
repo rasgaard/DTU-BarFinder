@@ -12,49 +12,19 @@ import android.support.v4.app.ActivityCompat;
  * Created by REC on 14-Jun-17.
  */
 
-/*public class CompassController {
+public class CompassController {
 
-    // The inner workings of a compass.
-    // Must be able to keep track of location and calculate the direction of the compass.
-    // Parts must work with activity-callback-methods.
+    public static double bearing(double currentLat, double currentLng, double targetLat, double targetLng) {
+        double latitude1 = Math.toRadians(currentLat);
+        double latitude2 = Math.toRadians(targetLat);
 
-    private static final long ONE_MIN = 60000;
+        double longitudeDiff = Math.toRadians(targetLng - currentLng);
 
-    private Location currentLocation;
-    private Location targetLocation;
-    private LocationManager locationManager;
+        double x = Math.sin(longitudeDiff) * Math.cos(latitude2);
+        double y = Math.cos(latitude1) * Math.sin(latitude2) - Math.sin(latitude1) * Math.cos(latitude2) * Math.cos(longitudeDiff);
 
-    /*CompassController(Location targetLocation, Context context) throws Exception {
-        this.targetLocation = targetLocation;
-
-        setup(context);
-
-
+        return (Math.toDegrees(Math.atan2(y, x)) + 270) % 360;
     }
-
-    public void setTargetLocation(Location targetLocation) {
-        this.targetLocation = targetLocation;
-    }
-
-
-    public boolean setup(Context context) throws MissingPermissionException {
-        // Method should be called when the compass is created first time.
-        if (null == (locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE))) {
-            return false;
-        }
-
-
-        // Checks if permissions are granted.
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            currentLocation = locationManager.getLastKnownLocation();
-        } else {
-            throw new MissingPermissionException("Missing location permissions");
-        }
-
-
-        return true;
-    }
-}*/
+}
 
 
