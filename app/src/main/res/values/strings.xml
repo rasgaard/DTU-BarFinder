@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DTU-BarFinder</string>
     <string name="vej_knap">find kb</string>
-    <string name="title_activity_main_compass">MainCompassActivity</string>
+    <string name="title_activity_main">DTU BarFinder</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,6 +11,7 @@
     <string name="open_in_google_maps">Åben med Google Maps</string>
 
     <string name="open_play_store">Appen findes ikke på din telefon, vil du åbne Play Store?</string>
+    <string name="error">Hov! Noget gik galt.</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
     <string name="open_drunkify">Åben Drunkify</string>

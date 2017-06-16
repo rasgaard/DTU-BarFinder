@@ -1,6 +1,8 @@
 package dk.pfpressere.dtu_barfinder;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,49 +25,23 @@ import android.graphics.Matrix;
  */
 
 public class CompassFragment extends Fragment {
+    // A class that controls which compass to draw.
 
-    static final float SCALING_FACTOR = 0.8f;
 
-    private Bitmap compassBitmap;
-    private float rotationDegrees = 90;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Addds the CompassFrameFragment to compas_frame
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.compass_frame, new CompassFrameFragment());
+        fragmentTransaction.commit();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        CompassView compassView = new CompassView(getActivity());
-
-        return compassView;
+        return inflater.inflate(R.layout.compass_fragment, container, false);
     }
 
-    private class CompassView extends View {
-
-        public CompassView(Context context) {
-            super(context);
-
-            // Create and scaled bitmap.
-            int scaling =  400; //TODO: Create scaling by view size.
-            compassBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.compass_512);
-            compassBitmap = Bitmap.createScaledBitmap(compassBitmap, scaling, scaling,false);
-
-        }
-
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-
-            // Rotates the bitmap
-            Matrix rotateMatrix = new Matrix();
-            rotateMatrix.postRotate(rotationDegrees);
-            compassBitmap = Bitmap.createBitmap(compassBitmap , 0, 0, compassBitmap.getWidth(),
-                    compassBitmap.getHeight(), rotateMatrix, true);
-
-
-            // Draws bitmap in center of canvas.
-            canvas.drawBitmap(compassBitmap,canvas.getWidth()/2-compassBitmap.getWidth()/2,
-                    canvas.getHeight()/2-compassBitmap.getWidth()/2, new Paint());
-
-        }
-    }
 }

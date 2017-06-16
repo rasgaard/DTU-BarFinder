@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainCompassActivity"
-            android:label="@string/title_activity_main_compass"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

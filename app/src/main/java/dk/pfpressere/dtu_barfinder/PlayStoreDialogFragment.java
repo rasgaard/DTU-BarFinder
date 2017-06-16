@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
 
-public class PlayStoreFragment extends DialogFragment {
+public class PlayStoreDialogFragment extends DialogFragment {
     private Intent drunkIntent;
 
     @Override
@@ -27,7 +28,8 @@ public class PlayStoreFragment extends DialogFragment {
                             drunkIntent.setData(Uri.parse("market://details?id=" + "tech.radioactiveswordfish.drunkify"));
                             startActivity(drunkIntent);
                         } catch (Exception e) {
-                            System.err.println("Hov! Noget gik galt.");
+                            Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+                            System.err.println(R.string.error);
 
                         }
                     }})
