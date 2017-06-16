@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="<"/>
+            android:text="Tilbage"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/center_bar_button"
@@ -38,6 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text=">"/>
+            android:text="Frem"/>
     </LinearLayout>
 </RelativeLayout>
