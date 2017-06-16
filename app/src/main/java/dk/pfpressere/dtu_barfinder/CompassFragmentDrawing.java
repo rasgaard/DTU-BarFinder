@@ -94,7 +94,7 @@ public class CompassFragmentDrawing extends Fragment {
 
         private void drawCompass(Canvas canvas) {
 
-            // Draws a background rect.
+            // Draws a background rect for background.
             Paint whitePaint = new Paint();
             whitePaint.setColor(Color.WHITE);
             whitePaint.setStyle(Paint.Style.FILL);
