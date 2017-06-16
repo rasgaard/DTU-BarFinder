@@ -3,11 +3,23 @@ package dk.pfpressere.dtu_barfinder;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.ViewGroup;
 import android.view.View;
 import android.os.Bundle;
-
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.graphics.Rect;
+import android.graphics.Matrix;
 
 /**
  * Created by REC on 15-Jun-17.
@@ -16,13 +28,17 @@ import android.os.Bundle;
 public class CompassFragment extends Fragment {
     // A class that controls which compass to draw.
 
-
+    View view;
+    private Button leftButton;
+    private Button centerButton;
+    private Button rightButton;
+    private int barNummer = 0;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Addds the CompassFragmen to compas_frame
+        // Addds the CompassFragment to compas_frame
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.compass_frame, new CompassFragmentDrawing());
@@ -30,7 +46,51 @@ public class CompassFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.compass_fragment, container, false);
+        view = inflater.inflate(R.layout.compass_fragment, container, false);
+
+        leftButton = (Button) view.findViewById(R.id.left_bar_button);
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                barNummer = barNummer - 1;
+                centerButton.setText(barnavn(barNummer));
+
+            }
+        });
+
+        centerButton = (Button) view.findViewById(R.id.center_bar_button);
+
+        rightButton = (Button) view.findViewById(R.id.right_bar_button);
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                barNummer++;
+                centerButton.setText(barnavn(barNummer));
+
+            }
+        });
+        return view;
+    }
+
+    public String barnavn (int x) {
+        if (x % 5 == 0) {
+            return "Kælderbaren";
+        }
+        if (x % 5 == 1 || x % 5 == -4) {
+            return "Hegnet";
+        }
+        if (x % 5 == 2 || x % 5 == -3) {
+            return "Diamanten";
+        }
+        if (x % 5 == 3 || x % 5 == -2) {
+            return "Diagonalen";
+        }
+        if (x % 5 == 4 || x % 5 == -1) {
+            return "Etheren";
+        }
+        else return null;
     }
 
 }
