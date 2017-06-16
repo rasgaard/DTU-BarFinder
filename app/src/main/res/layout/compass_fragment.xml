@@ -6,9 +6,38 @@
     <FrameLayout
         android:id="@+id/compass_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonsLinearLayout"
+        >
     </FrameLayout>
 
     <!--TODO: add buttons under the frame. -->
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonsLinearLayout">
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/left_bar_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="<"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/center_bar_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Kælderbaren"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/right_bar_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=">"/>
+    </LinearLayout>
 </RelativeLayout>
