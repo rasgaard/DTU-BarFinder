@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -32,8 +34,8 @@ public class CompassFragment extends Fragment {
     private Button leftButton;
     private Button centerButton;
     private Button rightButton;
-    private int barNummer = 0;
-
+    private int barNummer;
+    private Bar chosenBar = Bar.KB;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,23 +76,59 @@ public class CompassFragment extends Fragment {
         return view;
     }
 
+    public Bar getChosenBar() {
+        return chosenBar;
+    }
+
     public String barnavn (int x) {
         if (x % 5 == 0) {
+            chosenBar = Bar.KB;
             return "Kælderbaren";
         }
         if (x % 5 == 1 || x % 5 == -4) {
+            chosenBar = Bar.HEGNET;
             return "Hegnet";
         }
         if (x % 5 == 2 || x % 5 == -3) {
+            chosenBar = Bar.DIAMANTEN;
             return "Diamanten";
         }
         if (x % 5 == 3 || x % 5 == -2) {
+            chosenBar = Bar.DIAGONALEN;
             return "Diagonalen";
         }
         if (x % 5 == 4 || x % 5 == -1) {
+            chosenBar = Bar.ETHEREN;
             return "Etheren";
         }
         else return null;
+    }
+
+    public Location getLocation(Bar bar) {
+        Location location = new Location("");
+        switch (bar) {
+            case KB:
+                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.kb_latitude)));
+                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.kb_longitude)));
+                break;
+            case HEGNET:
+                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.hegnet_latitude)));
+                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.hegnet_longitude)));
+                break;
+            case DIAMANTEN:
+                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diamanten_latitude)));
+                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diamanten_longitude)));
+                break;
+            case DIAGONALEN:
+                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_latitude)));
+                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_longitude)));
+                break;
+            case ETHEREN:
+                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.etheren_latitude)));
+                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.etheren_longitude)));
+                break;
+        }
+        return location;
     }
 
 }

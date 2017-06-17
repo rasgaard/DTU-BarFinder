@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="kb_latitude">55.786467</string>
+    <string name="kb_longitude">12.525813</string>
+
+    <string name="hegnet_latitude">55.782790</string>
+    <string name="hegnet_longitude">12.517337</string>
+
+    <string name="diamanten_latitude">55.782748</string>
+    <string name="diamanten_longitude">12.521109</string>
+
+    <string name="diagonalen_latitude">55.789249</string>
+    <string name="diagonalen_longitude">12.525664</string>
+
+    <string name="etheren_latitude">55.787508</string>
+    <string name="etheren_longitude">12.518449</string>
+
+</resources>

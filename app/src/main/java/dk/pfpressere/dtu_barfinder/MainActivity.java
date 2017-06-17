@@ -3,6 +3,7 @@ package dk.pfpressere.dtu_barfinder;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    CompassFragment compassFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +36,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        compassFragment = new CompassFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_frame, new CompassFragment());
+        fragmentTransaction.add(R.id.main_frame, compassFragment);
         fragmentTransaction.commit();
     }
 
@@ -93,9 +97,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_google_maps_route) {
+            Location navigationLocation = compassFragment.getLocation(compassFragment.getChosenBar());
+
             // Start a goggle maps activity.
             startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://maps.google.dk/maps?=34.34&daddr=55.7865880, 12.5253610")));
+                    Uri.parse("https://maps.google.dk/maps?=34.34&daddr="+navigationLocation.getLatitude() +
+                                    ", " + navigationLocation.getLongitude())));
             // resets the checked item to the current fragment.
 
         } else if (id == R.id.open_drunkify) {
