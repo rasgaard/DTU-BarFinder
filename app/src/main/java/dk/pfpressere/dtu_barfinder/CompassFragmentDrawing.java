@@ -18,13 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-/**
- * Created by REC on 16-Jun-17.
- */
-
 public class CompassFragmentDrawing extends Fragment {
 // This class draws the compass in the fragment_frame.
 
+    static final String Tag = "compass_fragment_drawing";
     static final float SCALING_FACTOR = 0.8f;
     static final String DRAWING_THREAD_NAME = "drawingThread";
 
@@ -57,10 +54,13 @@ public class CompassFragmentDrawing extends Fragment {
     }
     
     public void setCompassRotation(float compassRotation) {
-        if(DRAWING_THREAD_NAME.equals(Thread.currentThread().getName())) {
-            throw new IllegalThreadStateException("Tried to set rotation from " + DRAWING_THREAD_NAME + ".");
+        // Thread control.
+        Log.i(TAG, "Entered setCompassRotation() from thread: " + Thread.currentThread().getName() + ".");
+        if("main".equals(Thread.currentThread().getName())) {
+            this.compassRotation = compassRotation;
+        } else {
+            throw new IllegalThreadStateException("Compass rotation must only be set from the main thread");
         }
-        this.compassRotation = compassRotation;
     }
 
     private class CompassView extends SurfaceView implements SurfaceHolder.Callback {
@@ -79,7 +79,8 @@ public class CompassFragmentDrawing extends Fragment {
             drawingThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Canvas canvas = null;
+                    // If something goes wrong here or with the drawing. trying adding canvas = null;
+                    Canvas canvas;
                     while(!Thread.currentThread().isInterrupted()) {
                         canvas = surfaceHolder.lockCanvas();
                         if (canvas != null) {
@@ -120,6 +121,7 @@ public class CompassFragmentDrawing extends Fragment {
         }
 
         private void updateCompass() {
+
         }
 
         @Override

@@ -16,4 +16,6 @@
     <string name="no">Nej</string>
     <string name="open_drunkify">Åben Drunkify</string>
 
+    <string name="forward">Frem</string>
+    <string name="back">Tilbage</string>
 </resources>
