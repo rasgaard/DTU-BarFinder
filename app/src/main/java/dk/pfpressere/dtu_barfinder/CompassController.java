@@ -25,6 +25,11 @@ public class CompassController {
 
         return (Math.toDegrees(Math.atan2(y, x)) + 270) % 360;
     }
+
+    public static double bearing(Location currentLocation, Location targetLocation) {
+        return bearing(currentLocation.getLatitude(), currentLocation.getLongitude(),
+                targetLocation.getLatitude(), targetLocation.getLongitude());
+    }
 }
 
 
