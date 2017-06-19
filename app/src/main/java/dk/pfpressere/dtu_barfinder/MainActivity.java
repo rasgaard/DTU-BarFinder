@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_beer_now) {
 
         } else if (id == R.id.nav_google_maps_route) {
-            Location navigationLocation = compassFragment.getLocation(compassFragment.getChosenBar());
+            Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
 
             // Start a goggle maps activity.
             startActivity(new Intent(Intent.ACTION_VIEW,
