@@ -59,7 +59,7 @@ public class CompassFragmentDrawing extends Fragment {
         if("main".equals(Thread.currentThread().getName())) {
             compassRotation = mCompassRotation;
         } else {
-            throw new IllegalThreadStateException("Compass rotation must only be set from the main thread");
+            throw new IllegalThreadStateException("Compass rotation can only be set from the main thread");
         }
     }
 

@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(2).setCheckable(false);
 
         if (id == R.id.nav_compass) {
             // Handle the compass action
@@ -120,7 +124,14 @@ public class MainActivity extends AppCompatActivity
                 currentState = appState.MISSIONS;
             }
         } else if (id == R.id.nav_beer_now) {
-
+            setNavigationItemChecked(appState.COMPASS);
+            if (currentState != appState.COMPASS) {
+                onNavigationItemSelected(navigationView.getMenu().getItem(0));
+                Toast.makeText(this,"Brug fra kompas-side.", Toast.LENGTH_LONG).show();
+            } else {
+                compassFragment.updateBarnummer(compassFragment.getBarIndex(compassFragment.getClosestBar()));
+                Toast.makeText(this,"Tætteste bar: " + compassFragment.getCenterButton().getText(), Toast.LENGTH_LONG).show();
+            }
         } else if (id == R.id.nav_google_maps_route) {
             if(currentState == appState.COMPASS) {
                 Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
@@ -133,7 +144,6 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this,R.string.app_wrong_state, Toast.LENGTH_LONG).show();
                 onNavigationItemSelected(navigationView.getMenu().getItem(0));
                 setNavigationItemChecked(appState.COMPASS);
-
             }
 
         } else if (id == R.id.open_drunkify) {
@@ -144,6 +154,7 @@ public class MainActivity extends AppCompatActivity
                 // Opens Drunkify if the app is already installed.
                 drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(drunkIntent);
+
             } else {
                 // Opens Play Store if Drunkify is not installed.
                 PlayStoreDialogFragment playStoreFragment = new PlayStoreDialogFragment();
