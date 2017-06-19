@@ -3,6 +3,12 @@ package dk.pfpressere.dtu_barfinder;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.hardware.GeomagneticField;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +17,7 @@ import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class CompassFragment extends Fragment {
+public class CompassFragment extends Fragment implements SensorEventListener{
     // A class that controls which compass to draw.
 
     //TODO: brug compassFragmentDrawing.setCompassRotation() et sted.
@@ -25,9 +31,28 @@ public class CompassFragment extends Fragment {
     private Bar chosenBar;
     private CompassFragmentDrawing compassFragmentDrawing;
 
+    private SensorManager sensorManager;
+    private Sensor sensorMagnetic;
+    private Sensor sensorGravity;
+    private GeomagneticField geomagneticField;
+
+    private CompassController mainCompassController;
+    private float heading;
+    private float[] orientation = new float[3];
+    private float[] rotation = new float[9];
+    private float[] gravity = new float[3];
+    private float[] geomagnetic = new float[3];
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         barNummer = 0;
+
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+
+        mainCompassController = new CompassController();
+        mainCompassController.setCurrentLocation(getLocation(Bar.HEGNET));
+        mainCompassController.setTargetLocation(getLocation(Bar.ETHEREN));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +94,24 @@ public class CompassFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        sensorMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorGravity = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        sensorManager.registerListener(this,sensorMagnetic,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this,sensorGravity,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void onStop() {
+        super.onStop();
+
+        sensorManager.unregisterListener(this,sensorMagnetic);
+        sensorManager.unregisterListener(this,sensorGravity);
+    }
+
     public Bar getChosenBar() {
         return chosenBar;
     }
@@ -79,19 +122,19 @@ public class CompassFragment extends Fragment {
             chosenBar = Bar.KB;
             return "Kælderbaren";
         }
-        if (x % 5 == 1 || x % 5 == -4) {
+        else if (x % 5 == 1 || x % 5 == -4) {
             chosenBar = Bar.HEGNET;
             return "Hegnet";
         }
-        if (x % 5 == 2 || x % 5 == -3) {
+        else if (x % 5 == 2 || x % 5 == -3) {
             chosenBar = Bar.DIAMANTEN;
             return "Diamanten";
         }
-        if (x % 5 == 3 || x % 5 == -2) {
+        else if (x % 5 == 3 || x % 5 == -2) {
             chosenBar = Bar.DIAGONALEN;
             return "Diagonalen";
         }
-        if (x % 5 == 4 || x % 5 == -1) {
+        else if (x % 5 == 4 || x % 5 == -1) {
             chosenBar = Bar.ETHEREN;
             return "Etheren";
         }
@@ -123,6 +166,26 @@ public class CompassFragment extends Fragment {
                 break;
         }
         return location;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            gravity = sensorEvent.values;
+        } else if(sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            geomagnetic = sensorEvent.values;
+        }
+
+        sensorManager.getRotationMatrix(rotation, null, gravity, geomagnetic);
+        sensorManager.getOrientation(rotation,orientation);
+        heading = -(float) Math.toDegrees(orientation[0]);
+        compassFragmentDrawing.setCompassRotation(heading);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 
 }

@@ -9,9 +9,29 @@ import android.net.UrlQuerySanitizer;
 import android.support.v4.app.ActivityCompat;
 
 public class CompassController {
+    Location currentLocation;
+    Location targetLocation;
 
-    public static double bearing(double currentLat, double currentLng, double targetLat, double targetLng) {
-        // TODO: Location.bearingTo(location) gør det samme lamo.
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setTargetLocation(Location targetLocation) {
+        this.targetLocation = targetLocation;
+    }
+
+    public Location getTargetLocation() {
+        return targetLocation;
+    }
+
+    public CompassController() {
+    }
+
+    /*public static double bearing(double currentLat, double currentLng, double targetLat, double targetLng) {
         double latitude1 = Math.toRadians(currentLat);
         double latitude2 = Math.toRadians(targetLat);
 
@@ -26,7 +46,7 @@ public class CompassController {
     public static double bearing(Location currentLocation, Location targetLocation) {
         return bearing(currentLocation.getLatitude(), currentLocation.getLongitude(),
                 targetLocation.getLatitude(), targetLocation.getLongitude());
-    }
+    }*/
 }
 
 

@@ -19,7 +19,15 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    appState currentState;
+    FragmentTransaction fragmentTransaction;
     CompassFragment compassFragment;
+    MissionsFragment missionsFragment;
+
+    private enum appState {
+        COMPASS, MISSIONS
+    }
+
     private static final String TAG = "main_activity";
 
     @Override
@@ -38,19 +46,19 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        compassFragment = new CompassFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        compassFragment = new CompassFragment();
         fragmentTransaction.add(R.id.main_frame, compassFragment);
         fragmentTransaction.commit();
+
+        currentState = appState.COMPASS;
+        setNavigationItemSelected(currentState);
     }
 
     protected void onResume() {
         super.onResume();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
-
+        setNavigationItemSelected(currentState);
     }
 
     @Override
@@ -92,11 +100,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_compass) {
+            // Handle the compass action
+            if(currentState!=appState.COMPASS){
+                fragmentTransaction.replace(R.id.main_frame, compassFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                currentState = appState.COMPASS;
+            }
+        } else if (id == R.id.nav_missions) {
+            /*if(currentState!=appState.MISSIONS){
+                fragmentTransaction.replace(R.id.main_frame, missionsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                currentState = appState.MISSIONS;
+            }*/
+        } else if (id == R.id.nav_beer_now) {
 
         } else if (id == R.id.nav_google_maps_route) {
             Location navigationLocation = compassFragment.getLocation(compassFragment.getChosenBar());
@@ -105,30 +124,33 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://maps.google.dk/maps?=34.34&daddr="+navigationLocation.getLatitude() +
                                     ", " + navigationLocation.getLongitude())));
-            // resets the checked item to the current fragment.
 
         } else if (id == R.id.open_drunkify) {
 
             Intent drunkIntent = getPackageManager().getLaunchIntentForPackage("tech.radioactiveswordfish.drunkify");
 
-                if (drunkIntent != null) {
-
-                    // Opens Drunkify if the app is already installed.
-                    drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(drunkIntent);
-
-                } else {
-                    // Opens Play Store if Drunkify is not installed.
-                    PlayStoreDialogFragment playStoreFragment = new PlayStoreDialogFragment();
-                    playStoreFragment.show(getSupportFragmentManager(), "Play Store");
-                }
-
-        } else if (id == R.id.nav_send) {
-
+            if (drunkIntent != null) {
+                // Opens Drunkify if the app is already installed.
+                drunkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(drunkIntent);
+            } else {
+                // Opens Play Store if Drunkify is not installed.
+                PlayStoreDialogFragment playStoreFragment = new PlayStoreDialogFragment();
+                playStoreFragment.show(getSupportFragmentManager(), "Play Store");
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setNavigationItemSelected(appState appState) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (appState == appState.COMPASS) {
+            navigationView.getMenu().getItem(0).setChecked(true);
+        } else if(appState == appState.MISSIONS) {
+            navigationView.getMenu().getItem(1).setChecked(true);
+        }
     }
 }
