@@ -91,6 +91,10 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         return view;
     }
 
+    public void onResume() {
+        super.onResume();
+    }
+
     @Override
     public void onStart() {
         super.onStart();

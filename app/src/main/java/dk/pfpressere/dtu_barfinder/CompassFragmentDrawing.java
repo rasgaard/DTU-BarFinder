@@ -55,7 +55,7 @@ public class CompassFragmentDrawing extends Fragment {
     
     public void setCompassRotation(float compassRotation) {
         // Thread control.
-        Log.i(TAG, "Entered setCompassRotation() from thread: " + Thread.currentThread().getName() + ".");
+        // Log.i(TAG, "Entered setCompassRotation() from thread: " + Thread.currentThread().getName() + ".");
         if("main".equals(Thread.currentThread().getName())) {
             this.compassRotation = compassRotation;
         } else {
