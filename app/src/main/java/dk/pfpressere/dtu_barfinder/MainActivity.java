@@ -17,9 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -169,9 +166,9 @@ public class MainActivity extends AppCompatActivity
 
     private void setNavigationItemChecked(appState appState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (appState == appState.COMPASS) {
+        if (appState == MainActivity.appState.COMPASS) {
             navigationView.getMenu().getItem(0).setChecked(true);
-        } else if(appState == appState.MISSIONS) {
+        } else if(appState == MainActivity.appState.MISSIONS) {
             navigationView.getMenu().getItem(1).setChecked(true);
         }
     }

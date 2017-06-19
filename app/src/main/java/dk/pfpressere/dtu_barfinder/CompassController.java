@@ -17,6 +17,10 @@ public class CompassController {
     public CompassController(Location targetLocation) {
         setTargetLocation(targetLocation);
     }
+
+    public float getBearing(Location currenLocation, float heading) {
+        return currenLocation.bearingTo(targetLocation) + heading;
+    }
 }
 
 

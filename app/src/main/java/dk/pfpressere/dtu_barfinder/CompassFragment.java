@@ -10,7 +10,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
@@ -32,8 +31,6 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     private int barNummer;
     private Bar chosenBar;
     private GPSTracker gps;
-
-
 
 
     // Fields for heading
@@ -233,13 +230,18 @@ public class CompassFragment extends Fragment implements SensorEventListener{
             geomagnetic = sensorEvent.values;
         }
 
-        sensorManager.getRotationMatrix(rotation, null, gravity, geomagnetic);
-        sensorManager.getOrientation(rotation,orientation);
+        SensorManager.getRotationMatrix(rotation, null, gravity, geomagnetic);
+        SensorManager.getOrientation(rotation,orientation);
         heading = -(float) Math.toDegrees(orientation[0]);
-        if(geomagneticField != null) {
-            heading = geomagneticField.getDeclination();
+        if(gps.getGeomagneticField() != null) {
+            heading -= geomagneticField.getDeclination();
         }
-        compassFragmentDrawing.setCompassRotation(heading);
+        Location north = new Location("");
+        north.setLatitude(0.0);
+        north.setLongitude(0.0);
+        CompassController northCompass = new CompassController(north);
+
+        CompassFragmentDrawing.setCompassRotation(mainCompassController.getBearing(gps.getLocation(), heading));
     }
 
     @Override

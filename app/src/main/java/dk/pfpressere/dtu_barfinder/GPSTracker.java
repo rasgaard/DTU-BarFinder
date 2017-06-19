@@ -1,30 +1,15 @@
 package dk.pfpressere.dtu_barfinder;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.Service;
+import android.hardware.GeomagneticField;
 import android.location.LocationListener;
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
@@ -33,6 +18,8 @@ public class GPSTracker extends Service implements LocationListener {
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean canGetLocation = false;
+
+    GeomagneticField geomagneticField;
 
     Location location;
 
@@ -93,11 +80,27 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (networkLocation.getAccuracy() < gpsLocation.getAccuracy()) {
-            location = networkLocation;
-        } else {
-            location = gpsLocation;
+
+        if(networkLocation == null) {
+            if(gpsLocation != null) {
+                location = gpsLocation;
+            }
         }
+
+        if(gpsLocation == null) {
+            if(networkLocation != null) {
+                location = networkLocation;
+            }
+        }
+
+        if(gpsLocation != null && networkLocation != null) {
+            if (networkLocation.getAccuracy() < gpsLocation.getAccuracy()) {
+                location = networkLocation;
+            } else {
+                location = gpsLocation;
+            }
+        }
+
         latitude = location.getLatitude();
         longitude = getLongitude();
         return location;
@@ -117,6 +120,10 @@ public class GPSTracker extends Service implements LocationListener {
             longitude = location.getLongitude();
         }
         return longitude;
+    }
+
+    public GeomagneticField getGeomagneticField() {
+        return geomagneticField;
     }
 
     public boolean canGetLocation() {
