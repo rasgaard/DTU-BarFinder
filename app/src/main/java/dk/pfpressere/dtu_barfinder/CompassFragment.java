@@ -50,7 +50,7 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 
-        mainCompassController = new CompassController(getLocation(Bar.HEGNET),getLocation(Bar.ETHEREN));
+        mainCompassController = new CompassController(getBarLocation(Bar.HEGNET),getBarLocation(Bar.ETHEREN));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,33 +117,33 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     public String findBarByIndex (int x) {
         if (x % 5 == 0) {
             chosenBar = Bar.KB;
-            mainCompassController.setTargetLocation(getLocation(chosenBar));
+            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
             return "Kælderbaren";
         }
         else if (x % 5 == 1 || x % 5 == -4) {
             chosenBar = Bar.HEGNET;
-            mainCompassController.setTargetLocation(getLocation(chosenBar));
+            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
             return "Hegnet";
         }
         else if (x % 5 == 2 || x % 5 == -3) {
             chosenBar = Bar.DIAMANTEN;
-            mainCompassController.setTargetLocation(getLocation(chosenBar));
+            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
             return "Diamanten";
         }
         else if (x % 5 == 3 || x % 5 == -2) {
             chosenBar = Bar.DIAGONALEN;
-            mainCompassController.setTargetLocation(getLocation(chosenBar));
+            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
             return "Diagonalen";
         }
         else if (x % 5 == 4 || x % 5 == -1) {
             chosenBar = Bar.ETHEREN;
-            mainCompassController.setTargetLocation(getLocation(chosenBar));
+            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
             return "Etheren";
         }
         else return null;
     }
 
-    public Location getLocation(Bar bar) {
+    public Location getBarLocation(Bar bar) {
         Location location = new Location("");
         switch (bar) {
             case KB:
