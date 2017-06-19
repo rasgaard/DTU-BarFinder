@@ -121,12 +121,12 @@ public class CompassFragmentDrawing extends Fragment {
         }
 
         private void updateCompass() {
-
+            // Do nothing.
         }
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-            
+            // Do nothing.
         }
 
         @Override
