@@ -23,35 +23,46 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
     //TODO: brug compassFragmentDrawing.setCompassRotation() et sted.
 
-    View view;
-    GPSTracker gps;
     private final static String TAG = "compass_fragment";
+
+    // Fields for buttons.
     private Button leftButton;
     private Button centerButton;
     private Button rightButton;
     private int barNummer;
     private Bar chosenBar;
-    private CompassFragmentDrawing compassFragmentDrawing;
+    private GPSTracker gps;
 
+
+
+
+    // Fields for heading
     private SensorManager sensorManager;
     private Sensor sensorMagnetic;
     private Sensor sensorGravity;
+    private float heading;
     // TODO: Set this value in onLocationChanged().
     private GeomagneticField geomagneticField;
-
-    private CompassController mainCompassController;
     private float[] orientation = new float[3];
     private float[] rotation = new float[9];
     private float[] gravity = new float[3];
     private float[] geomagnetic = new float[3];
 
+    // Views and fragments.
+    private CompassController mainCompassController;
+    private CompassFragmentDrawing compassFragmentDrawing;
+    View view;
+
+    public Button getCenterButton() {
+        return centerButton;
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         barNummer = 0;
         gps = new GPSTracker(getActivity());
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        mainCompassController = new CompassController(gps.getLocation(), getBarLocation(Bar.HEGNET));
+        mainCompassController = new CompassController(getBarLocation(Bar.HEGNET));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,6 +129,12 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         sensorManager.unregisterListener(this,sensorGravity);
     }
 
+    public String updateBarnummer(int barNummer) {
+        this.barNummer = barNummer;
+        centerButton.setText(findBarByIndex(barNummer));
+        return findBarByIndex(barNummer);
+    }
+
     public Bar getChosenBar() {
         return chosenBar;
     }
@@ -179,6 +196,34 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         return location;
     }
 
+    public Bar getClosestBar() {
+        Bar closestBar = Bar.KB;
+        Float distanceToClosestBar = Float.MAX_VALUE;
+        for (Bar bar : Bar.values()){
+            if (distanceToClosestBar > gps.getLocation().distanceTo(getBarLocation(bar))) {
+                closestBar = bar;
+                distanceToClosestBar = gps.getLocation().distanceTo(getBarLocation(bar));
+            }
+        }
+        return closestBar;
+    }
+
+    public int getBarIndex(Bar bar) {
+        switch (bar) {
+            case KB:
+                return 0;
+            case HEGNET:
+                return 1;
+            case DIAMANTEN:
+                return 2;
+            case DIAGONALEN:
+                return 3;
+            case ETHEREN:
+                return 4;
+        }
+        return -1;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
@@ -190,11 +235,11 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
         sensorManager.getRotationMatrix(rotation, null, gravity, geomagnetic);
         sensorManager.getOrientation(rotation,orientation);
-        mainCompassController.setHeading(-(float) Math.toDegrees(orientation[0]));
+        heading = -(float) Math.toDegrees(orientation[0]);
         if(geomagneticField != null) {
-            mainCompassController.setHeading(geomagneticField.getDeclination());
+            heading = geomagneticField.getDeclination();
         }
-        compassFragmentDrawing.setCompassRotation(mainCompassController.getHeading());
+        compassFragmentDrawing.setCompassRotation(heading);
     }
 
     @Override
