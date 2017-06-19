@@ -34,6 +34,7 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     private SensorManager sensorManager;
     private Sensor sensorMagnetic;
     private Sensor sensorGravity;
+    // TODO: Set this value in onLocationChanged().
     private GeomagneticField geomagneticField;
 
     private CompassController mainCompassController;
@@ -182,7 +183,7 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         sensorManager.getOrientation(rotation,orientation);
         mainCompassController.setHeading(-(float) Math.toDegrees(orientation[0]));
         if(geomagneticField != null) {
-
+            mainCompassController.setHeading(geomagneticField.getDeclination());
         }
         compassFragmentDrawing.setCompassRotation(mainCompassController.getHeading());
     }
