@@ -30,7 +30,7 @@ public class CompassFragmentDrawing extends Fragment {
     Thread drawingThread;
     
     // Thread danger! Always use setCompassRotatino().
-    private float compassRotation = 0;
+    private static float compassRotation = 0;
     
     
     private LayoutInflater inflater;
@@ -48,16 +48,16 @@ public class CompassFragmentDrawing extends Fragment {
         this.container = container;
 
         compassView = new CompassView(getActivity());
-        compassBitmapSrc = BitmapFactory.decodeResource(getResources(),R.drawable.compass_512);
+        compassBitmapSrc = BitmapFactory.decodeResource(getResources(), R.drawable.compass_512);
 
         return compassView;
     }
     
-    public void setCompassRotation(float compassRotation) {
+    public static void setCompassRotation(float mCompassRotation) {
         // Thread control.
-        Log.i(TAG, "Entered setCompassRotation() from thread: " + Thread.currentThread().getName() + ".");
+        // Log.i(TAG, "Entered setCompassRotation() from thread: " + Thread.currentThread().getName() + ".");
         if("main".equals(Thread.currentThread().getName())) {
-            this.compassRotation = compassRotation;
+            compassRotation = mCompassRotation;
         } else {
             throw new IllegalThreadStateException("Compass rotation must only be set from the main thread");
         }
@@ -105,8 +105,8 @@ public class CompassFragmentDrawing extends Fragment {
             canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), whitePaint);
 
             // Creates a scaled bitmap from the src, that scales to the view.
-            int scaling = Math.round(Math.min(canvas.getWidth(),canvas.getHeight()) * SCALING_FACTOR);
-            Bitmap compassBitmap = Bitmap.createScaledBitmap(compassBitmapSrc, scaling, scaling,false);
+            int scaling = Math.round(Math.min(canvas.getWidth(), canvas.getHeight()) * SCALING_FACTOR);
+            Bitmap compassBitmap = Bitmap.createScaledBitmap(compassBitmapSrc, scaling, scaling, false);
 
             // Rotates the bitmap with current compassRotation.
             Matrix rotateMatrix = new Matrix();
@@ -116,17 +116,17 @@ public class CompassFragmentDrawing extends Fragment {
 
 
             // Draws bitmap in center of canvas.
-            canvas.drawBitmap(compassBitmap,canvas.getWidth()/2-compassBitmap.getWidth()/2,
-                    canvas.getHeight()/2-compassBitmap.getWidth()/2, new Paint());
+            canvas.drawBitmap(compassBitmap, canvas.getWidth() / 2 - compassBitmap.getWidth() / 2,
+                                             canvas.getHeight() / 2 - compassBitmap.getWidth() / 2, new Paint());
         }
 
         private void updateCompass() {
-
+            // Do nothing.
         }
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-            
+            // Do nothing.
         }
 
         @Override

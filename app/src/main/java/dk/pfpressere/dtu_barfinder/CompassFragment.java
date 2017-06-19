@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class CompassFragment extends Fragment implements SensorEventListener{
     // A class that controls which compass to draw.
@@ -23,6 +24,7 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     //TODO: brug compassFragmentDrawing.setCompassRotation() et sted.
 
     View view;
+    GPSTracker gps;
     private final static String TAG = "compass_fragment";
     private Button leftButton;
     private Button centerButton;
@@ -47,10 +49,9 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         barNummer = 0;
-
+        gps = new GPSTracker(getActivity());
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-
-        mainCompassController = new CompassController(getBarLocation(Bar.HEGNET),getBarLocation(Bar.ETHEREN));
+        mainCompassController = new CompassController(gps.getLocation(), getBarLocation(Bar.HEGNET));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +65,13 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
         view = inflater.inflate(R.layout.compass_fragment, container, false);
         centerButton = (Button) view.findViewById(R.id.center_bar_button);
+        centerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Toast.makeText(getActivity(), "Your Location is -\nLat: " + gps.getLatitude() + "\nLong: " + gps.getLongitude(), Toast.LENGTH_LONG).show();
+            }
+        });
         centerButton.setText(findBarByIndex(barNummer));
 
         leftButton = (Button) view.findViewById(R.id.left_bar_button);
@@ -82,13 +89,15 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 barNummer++;
                 centerButton.setText(findBarByIndex(barNummer));
-
             }
         });
         return view;
+    }
+
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

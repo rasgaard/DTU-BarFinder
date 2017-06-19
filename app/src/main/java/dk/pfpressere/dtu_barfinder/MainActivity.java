@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -48,17 +51,18 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        missionsFragment = new MissionsFragment();
         compassFragment = new CompassFragment();
         fragmentTransaction.add(R.id.main_frame, compassFragment);
         fragmentTransaction.commit();
 
         currentState = appState.COMPASS;
-        setNavigationItemSelected(currentState);
+        setNavigationItemChecked(currentState);
     }
 
     protected void onResume() {
         super.onResume();
-        setNavigationItemSelected(currentState);
+        setNavigationItemChecked(currentState);
     }
 
     @Override
@@ -103,27 +107,34 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_compass) {
             // Handle the compass action
             if(currentState!=appState.COMPASS){
+                fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_frame, compassFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 currentState = appState.COMPASS;
             }
         } else if (id == R.id.nav_missions) {
-            /*if(currentState!=appState.MISSIONS){
+            if(currentState != appState.MISSIONS){
+                fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_frame, missionsFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 currentState = appState.MISSIONS;
-            }*/
+            }
         } else if (id == R.id.nav_beer_now) {
 
         } else if (id == R.id.nav_google_maps_route) {
-            Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
+            if(currentState == appState.COMPASS) {
+                Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
 
-            // Start a goggle maps activity.
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://maps.google.dk/maps?=34.34&daddr="+navigationLocation.getLatitude() +
-                                    ", " + navigationLocation.getLongitude())));
+                // Start a goggle maps activity.
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://maps.google.dk/maps?=34.34&daddr=" + navigationLocation.getLatitude() +
+                                ", " + navigationLocation.getLongitude())));
+            } else {
+                Toast.makeText(this,R.string.app_wrong_state, Toast.LENGTH_LONG).show();
+                onNavigationItemSelected(navigationView.getMenu().getItem(0));
+                setNavigationItemChecked(appState.COMPASS);
+
+            }
 
         } else if (id == R.id.open_drunkify) {
 
@@ -145,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void setNavigationItemSelected(appState appState) {
+    private void setNavigationItemChecked(appState appState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (appState == appState.COMPASS) {
             navigationView.getMenu().getItem(0).setChecked(true);

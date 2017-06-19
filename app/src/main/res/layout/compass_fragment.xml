@@ -22,23 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/back"
-            android:textColor="@color/colorPrimary"/>
-
+            android:text="@string/back"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/center_bar_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_weight="1" />
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/right_bar_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/forward"
-            android:textColor="@color/colorPrimary"/>
+            android:text="@string/forward"/>
     </LinearLayout>
 </RelativeLayout>

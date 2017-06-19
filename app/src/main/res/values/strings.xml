@@ -20,6 +20,8 @@
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
 
+    <string name="app_wrong_state">Vælg først et kompas.</string>
+
     <string name="forward">Frem</string>
     <string name="back">Tilbage</string>
 </resources>
