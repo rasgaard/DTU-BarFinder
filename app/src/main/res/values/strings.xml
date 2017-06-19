@@ -8,19 +8,17 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- Drawer -->
     <string name="open_in_google_maps">Åben med Google Maps</string>
-
     <string name="compass">Kompas</string>
-
     <string name="missions">Missioner</string>
-
     <string name="beer_now">Øl nu!</string>
+    <string name="open_drunkify">Åben Drunkify</string>
 
     <string name="open_play_store">Appen findes ikke på din telefon, vil du åbne Play Store?</string>
     <string name="error">Hov! Noget gik galt.</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
-    <string name="open_drunkify">Åben Drunkify</string>
 
     <string name="forward">Frem</string>
     <string name="back">Tilbage</string>
