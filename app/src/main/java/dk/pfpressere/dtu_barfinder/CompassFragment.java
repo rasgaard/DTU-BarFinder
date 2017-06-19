@@ -37,7 +37,6 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     private GeomagneticField geomagneticField;
 
     private CompassController mainCompassController;
-    private float heading;
     private float[] orientation = new float[3];
     private float[] rotation = new float[9];
     private float[] gravity = new float[3];
@@ -50,18 +49,15 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 
-        mainCompassController = new CompassController();
-        mainCompassController.setCurrentLocation(getLocation(Bar.HEGNET));
-        mainCompassController.setTargetLocation(getLocation(Bar.ETHEREN));
+        mainCompassController = new CompassController(getLocation(Bar.HEGNET),getLocation(Bar.ETHEREN));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // Addds the CompassFragment to compas_frame
+        // Addds the CompassFragment to compass_frame
         compassFragmentDrawing = new CompassFragmentDrawing();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.add(R.id.compass_frame, compassFragmentDrawing);
         fragmentTransaction.add(R.id.compass_frame, compassFragmentDrawing);
         fragmentTransaction.commit();
 
@@ -120,22 +116,27 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     public String findBarByIndex (int x) {
         if (x % 5 == 0) {
             chosenBar = Bar.KB;
+            mainCompassController.setTargetLocation(getLocation(chosenBar));
             return "Kælderbaren";
         }
         else if (x % 5 == 1 || x % 5 == -4) {
             chosenBar = Bar.HEGNET;
+            mainCompassController.setTargetLocation(getLocation(chosenBar));
             return "Hegnet";
         }
         else if (x % 5 == 2 || x % 5 == -3) {
             chosenBar = Bar.DIAMANTEN;
+            mainCompassController.setTargetLocation(getLocation(chosenBar));
             return "Diamanten";
         }
         else if (x % 5 == 3 || x % 5 == -2) {
             chosenBar = Bar.DIAGONALEN;
+            mainCompassController.setTargetLocation(getLocation(chosenBar));
             return "Diagonalen";
         }
         else if (x % 5 == 4 || x % 5 == -1) {
             chosenBar = Bar.ETHEREN;
+            mainCompassController.setTargetLocation(getLocation(chosenBar));
             return "Etheren";
         }
         else return null;
@@ -179,8 +180,11 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
         sensorManager.getRotationMatrix(rotation, null, gravity, geomagnetic);
         sensorManager.getOrientation(rotation,orientation);
-        heading = -(float) Math.toDegrees(orientation[0]);
-        compassFragmentDrawing.setCompassRotation(heading);
+        mainCompassController.setHeading(-(float) Math.toDegrees(orientation[0]));
+        if(geomagneticField != null) {
+
+        }
+        compassFragmentDrawing.setCompassRotation(mainCompassController.getHeading());
     }
 
     @Override

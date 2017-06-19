@@ -3,14 +3,16 @@ package dk.pfpressere.dtu_barfinder;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.icu.text.CompactDecimalFormat;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.UrlQuerySanitizer;
 import android.support.v4.app.ActivityCompat;
 
 public class CompassController {
-    Location currentLocation;
-    Location targetLocation;
+    private Location currentLocation;
+    private Location targetLocation;
+    private float heading;
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
@@ -28,7 +30,18 @@ public class CompassController {
         return targetLocation;
     }
 
-    public CompassController() {
+    public float getHeading() {
+        return heading;
+    }
+
+    public void setHeading(float heading) {
+        this.heading = heading;
+    }
+
+    public CompassController(Location currentLocation, Location targetLocation) {
+        setTargetLocation(targetLocation);
+        setCurrentLocation(currentLocation);
+        heading = 0;
     }
 
     /*public static double bearing(double currentLat, double currentLng, double targetLat, double targetLng) {
