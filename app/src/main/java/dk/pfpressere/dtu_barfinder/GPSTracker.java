@@ -47,6 +47,8 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     public Location getLocation() {
+        Location networkLocation = null;
+        Location gpsLocation = null;
         try {
             mLocationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -56,22 +58,19 @@ public class GPSTracker extends Service implements LocationListener {
                 this.canGetLocation = true;
 
                 if (isNetworkEnabled) {
-
                     mLocationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             0,
                             0, this);
 
                     if (mLocationManager != null) {
-                        location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        networkLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                         if (location != null) {
-
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
                         }
                     }
-
                 }
 
                 if(isGPSEnabled) {
@@ -80,9 +79,8 @@ public class GPSTracker extends Service implements LocationListener {
                                 LocationManager.GPS_PROVIDER,
                                 0,
                                 0, this);
-
                         if(mLocationManager != null) {
-                            location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            gpsLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                             if(location != null) {
                                 latitude = location.getLatitude();
@@ -95,6 +93,13 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (networkLocation.getAccuracy() < gpsLocation.getAccuracy()) {
+            location = networkLocation;
+        } else {
+            location = gpsLocation;
+        }
+        latitude = location.getLatitude();
+        longitude = getLongitude();
         return location;
     }
 
