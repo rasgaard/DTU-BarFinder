@@ -4,16 +4,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
-
-
-/**
- * Created by REC on 15-Jun-17.
- */
 
 public class CompassFragment extends Fragment {
     // A class that controls which compass to draw.
@@ -21,6 +17,7 @@ public class CompassFragment extends Fragment {
     //TODO: brug compassFragmentDrawing.setCompassRotation() et sted.
 
     View view;
+    private final static String TAG = "compass_fragment";
     private Button leftButton;
     private Button centerButton;
     private Button rightButton;
@@ -39,6 +36,7 @@ public class CompassFragment extends Fragment {
         compassFragmentDrawing = new CompassFragmentDrawing();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction.add(R.id.compass_frame, compassFragmentDrawing);
         fragmentTransaction.add(R.id.compass_frame, compassFragmentDrawing);
         fragmentTransaction.commit();
 
