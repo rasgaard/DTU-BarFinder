@@ -49,9 +49,8 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         barNummer = 0;
-
-        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         gps = new GPSTracker(getActivity());
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mainCompassController = new CompassController(gps.getLocation(), getBarLocation(Bar.HEGNET));
     }
 
