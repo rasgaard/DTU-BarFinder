@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
@@ -138,8 +139,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("test","In inLocationChanced()");
         this.location = location;
-        Toast.makeText(context,"Location changed", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context,"Location changed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
