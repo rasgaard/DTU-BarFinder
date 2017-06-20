@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(2).setCheckable(false);
+        navigationView.getMenu().getItem(3).setCheckable(false);
+        navigationView.getMenu().getItem(4).setCheckable(false);
 
         if (id == R.id.nav_compass) {
             // Handle the compass action
