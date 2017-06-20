@@ -20,8 +20,6 @@ import android.widget.Toast;
 public class CompassFragment extends Fragment implements SensorEventListener{
     // A class that controls which compass to draw.
 
-    //TODO: brug compassFragmentDrawing.setCompassRotation() et sted.
-
     private final static String TAG = "compass_fragment";
 
     // Fields for buttons.
@@ -38,7 +36,7 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     private Sensor sensorMagnetic;
     private Sensor sensorGravity;
     private float heading;
-    // TODO: Set this value in onLocationChanged().
+
     private GeomagneticField geomagneticField;
     private float[] orientation = new float[3];
     private float[] rotation = new float[9];
@@ -236,11 +234,6 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         if(gps.getGeomagneticField() != null) {
             heading -= geomagneticField.getDeclination();
         }
-        Location north = new Location("");
-        north.setLatitude(0.0);
-        north.setLongitude(0.0);
-        CompassController northCompass = new CompassController(north);
-
         CompassFragmentDrawing.setCompassRotation(mainCompassController.getBearing(gps.getLocation(), heading));
     }
 

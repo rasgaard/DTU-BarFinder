@@ -26,7 +26,7 @@ public class CompassFragmentDrawing extends Fragment {
     private Bitmap compassBitmapSrc;
     Thread drawingThread;
     
-    // Thread danger! Always use setCompassRotatino().
+    // Thread danger! Always use setCompassRotation().
     private static float compassRotation = 0;
     
     
