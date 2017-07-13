@@ -123,17 +123,11 @@ public class MainActivity extends AppCompatActivity
                 currentState = appState.MISSIONS;
             }
         } else if (id == R.id.nav_beer_now) {
-            setNavigationItemChecked(appState.COMPASS);
-            if (currentState != appState.COMPASS) {
-                onNavigationItemSelected(navigationView.getMenu().getItem(0));
-                Toast.makeText(this,"Brug fra kompas-side.", Toast.LENGTH_LONG).show();
-            } else {
-                compassFragment.updateBarnummer(compassFragment.getBarIndex(compassFragment.getClosestBar()));
-                Toast.makeText(this,"Tætteste bar: " + compassFragment.getCenterButton().getText(), Toast.LENGTH_LONG).show();
-            }
+            // Do nothing
         } else if (id == R.id.nav_google_maps_route) {
             if(currentState == appState.COMPASS) {
-                Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
+                //Location navigationLocation = compassFragment.getBarLocation(compassFragment.getChosenBar());
+                Location navigationLocation = compassFragment.getChosenDestination().getLocation();
 
                 // Start a goggle maps activity.
                 startActivity(new Intent(Intent.ACTION_VIEW,

@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+
 public class CompassFragment extends Fragment implements SensorEventListener{
     // A class that controls which compass to draw.
 
@@ -26,10 +28,10 @@ public class CompassFragment extends Fragment implements SensorEventListener{
     private Button leftButton;
     private Button centerButton;
     private Button rightButton;
-    private int barNummer;
-    private Bar chosenBar;
+    private Destination chosenDestination;
     private GPSTracker gps;
 
+    private DestinationManager destinationManager;
 
     // Fields for heading
     private SensorManager sensorManager;
@@ -54,10 +56,14 @@ public class CompassFragment extends Fragment implements SensorEventListener{
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        barNummer = 0;
+
+        destinationManager = new DestinationManager();
+        initStandardDestinations();
+
         gps = new GPSTracker(getActivity());
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        mainCompassController = new CompassController(getBarLocation(Bar.HEGNET));
+
+        mainCompassController = new CompassController(destinationManager.getCurrentDestination().getLocation());
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,16 +84,16 @@ public class CompassFragment extends Fragment implements SensorEventListener{
                 Toast.makeText(getActivity(), "Your Location is -\nLat: " + gps.getLatitude() + "\nLong: " + gps.getLongitude(), Toast.LENGTH_LONG).show();
             }
         });
-        centerButton.setText(findBarByIndex(barNummer));
+        // Updates the center button.
+        chosenDestination = destinationManager.getCurrentDestination();
+        onDestinationChanged();
 
         leftButton = (Button) view.findViewById(R.id.left_bar_button);
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                barNummer = barNummer - 1;
-                centerButton.setText(findBarByIndex(barNummer));
-
+                chosenDestination = destinationManager.getPreviousDestination();
+                onDestinationChanged();
             }
         });
 
@@ -95,8 +101,8 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                barNummer++;
-                centerButton.setText(findBarByIndex(barNummer));
+                chosenDestination = destinationManager.getNextDestination();
+                onDestinationChanged();
             }
         });
         return view;
@@ -124,99 +130,48 @@ public class CompassFragment extends Fragment implements SensorEventListener{
         sensorManager.unregisterListener(this,sensorGravity);
     }
 
-    public String updateBarnummer(int barNummer) {
-        this.barNummer = barNummer;
-        centerButton.setText(findBarByIndex(barNummer));
-        return findBarByIndex(barNummer);
+    public void updateDestination(Destination destination) {
+        chosenDestination = destination;
+        onDestinationChanged();
     }
 
-    public Bar getChosenBar() {
-        return chosenBar;
+    public Destination getChosenDestination() {
+        return chosenDestination;
     }
 
-    // Finds and returns name of a bar. Also sets a chosenBar.
-    public String findBarByIndex (int x) {
-        if (x % 5 == 0) {
-            chosenBar = Bar.KB;
-            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
-            return "Kælderbaren";
-        }
-        else if (x % 5 == 1 || x % 5 == -4) {
-            chosenBar = Bar.HEGNET;
-            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
-            return "Hegnet";
-        }
-        else if (x % 5 == 2 || x % 5 == -3) {
-            chosenBar = Bar.DIAMANTEN;
-            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
-            return "Diamanten";
-        }
-        else if (x % 5 == 3 || x % 5 == -2) {
-            chosenBar = Bar.DIAGONALEN;
-            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
-            return "Diagonalen";
-        }
-        else if (x % 5 == 4 || x % 5 == -1) {
-            chosenBar = Bar.ETHEREN;
-            mainCompassController.setTargetLocation(getBarLocation(chosenBar));
-            return "Etheren";
-        }
-        else return null;
+    private void initStandardDestinations() {
+        Location location;
+
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(getActivity().getString(R.string.kb_latitude)));
+        location.setLongitude(Double.parseDouble(getActivity().getString(R.string.kb_longitude)));
+        destinationManager.addDestination(new Destination("KB", location));
+
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(getActivity().getString(R.string.hegnet_latitude)));
+        location.setLongitude(Double.parseDouble(getActivity().getString(R.string.hegnet_longitude)));
+        destinationManager.addDestination(new Destination(getActivity().getString(R.string.hegnet_name), location));
+
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diamanten_latitude)));
+        location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diamanten_longitude)));
+        destinationManager.addDestination(new Destination(getActivity().getString(R.string.diamanten_name), location));
+
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_latitude)));
+        location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_longitude)));
+        destinationManager.addDestination(new Destination(getActivity().getString(R.string.diagonalen_name), location));
+
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(getActivity().getString(R.string.etheren_latitude)));
+        location.setLongitude(Double.parseDouble(getActivity().getString(R.string.etheren_longitude)));
+        destinationManager.addDestination(new Destination(getActivity().getString(R.string.etheren_name), location));
+
     }
 
-    public Location getBarLocation(Bar bar) {
-        Location location = new Location("");
-        switch (bar) {
-            case KB:
-                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.kb_latitude)));
-                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.kb_longitude)));
-                break;
-            case HEGNET:
-                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.hegnet_latitude)));
-                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.hegnet_longitude)));
-                break;
-            case DIAMANTEN:
-                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diamanten_latitude)));
-                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diamanten_longitude)));
-                break;
-            case DIAGONALEN:
-                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_latitude)));
-                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.diagonalen_longitude)));
-                break;
-            case ETHEREN:
-                location.setLatitude(Double.parseDouble(getActivity().getString(R.string.etheren_latitude)));
-                location.setLongitude(Double.parseDouble(getActivity().getString(R.string.etheren_longitude)));
-                break;
-        }
-        return location;
-    }
-
-    public Bar getClosestBar() {
-        Bar closestBar = Bar.KB;
-        Float distanceToClosestBar = Float.MAX_VALUE;
-        for (Bar bar : Bar.values()){
-            if (distanceToClosestBar > gps.getLocation().distanceTo(getBarLocation(bar))) {
-                closestBar = bar;
-                distanceToClosestBar = gps.getLocation().distanceTo(getBarLocation(bar));
-            }
-        }
-        return closestBar;
-    }
-
-    public int getBarIndex(Bar bar) {
-        switch (bar) {
-            case KB:
-                return 0;
-            case HEGNET:
-                return 1;
-            case DIAMANTEN:
-                return 2;
-            case DIAGONALEN:
-                return 3;
-            case ETHEREN:
-                return 4;
-        }
-        return -1;
+    private void onDestinationChanged() {
+        centerButton.setText(chosenDestination.getName());
+        mainCompassController.setTargetLocation(chosenDestination.getLocation());
     }
 
     @Override
